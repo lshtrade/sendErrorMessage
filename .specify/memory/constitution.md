@@ -1,50 +1,151 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+===================
+Version Change: Initial → 1.0.0
+Modified Principles: N/A (Initial creation)
+Added Sections:
+  - Core Principles (5 principles)
+  - Development Standards
+  - Quality Assurance
+  - Governance
+
+Templates Requiring Updates:
+  ✅ plan-template.md - Updated to reference constitution v1.0.0
+  ✅ spec-template.md - Aligned with reliability and testing principles
+  ✅ tasks-template.md - Aligned with TDD and modularity requirements
+  ⚠ No commands/ directory found - skipped
+
+Follow-up TODOs: None
+===================
+-->
+
+# Supabase Error Logger Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Reliability First
+Error logging MUST never fail silently. All error capture paths MUST implement
+fallback mechanisms to ensure data integrity. When the primary logging path fails,
+the system MUST degrade gracefully through backup mechanisms (console logging,
+local storage, queuing).
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**Rationale**: Missing error data fundamentally compromises debugging capability
+and system observability. Silent failures in error logging create blind spots
+that can mask critical production issues.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Impact**: All error paths require explicit failure handling. Code reviews MUST
+verify fallback mechanisms exist.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Privacy by Design
+No sensitive user data MUST appear in error logs. All error data MUST be sanitized
+before transmission to prevent exposure of passwords, tokens, personally identifiable
+information (PII), or other sensitive content.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**Rationale**: Compliance requirements (GDPR, CCPA) and user trust mandate that
+logging systems cannot become attack vectors for data exposure.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Impact**: Sanitization logic required before all logging operations. Security
+reviews MUST validate data handling patterns.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. Test-First Development (NON-NEGOTIABLE)
+Tests MUST be written before implementation. The TDD cycle (Red-Green-Refactor)
+is strictly enforced: write failing tests, implement minimal code to pass, then
+refactor.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Rationale**: Test-first development ensures testability, reduces defects, and
+creates living documentation of expected behavior. Pre-written tests prevent
+scope creep and maintain focus.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Impact**: Pull requests without failing tests first will be rejected. Code
+coverage MUST be maintained above 85%.
+
+### IV. Minimal Configuration
+The library MUST work with minimal configuration. Sensible defaults MUST be
+provided for all optional settings. Complex configuration indicates poor API
+design.
+
+**Rationale**: Developer experience suffers when configuration becomes a barrier
+to adoption. Simplicity reduces support burden and integration friction.
+
+**Impact**: New configuration options require justification. API design reviews
+MUST evaluate if new options can be eliminated through better defaults.
+
+### V. Performance Conscious
+Error logging MUST impose minimal overhead on host applications. Maximum latency
+per log operation: 100ms p95. Memory footprint MUST remain under 10MB for typical
+usage patterns.
+
+**Rationale**: Error logging is defensive infrastructure that must not degrade
+application performance. Logging overhead that impacts user experience defeats
+the purpose.
+
+**Impact**: Performance benchmarks required for all changes touching the logging
+path. PRs introducing performance regressions will be rejected.
+
+## Development Standards
+
+### Technology Stack
+- **Language**: TypeScript (strict mode enabled)
+- **Runtime**: Node.js 18+ compatibility required
+- **Backend**: Supabase (via @supabase/supabase-js ^2.0.0)
+- **Testing**: Vitest for unit and integration tests
+- **Build**: TypeScript compiler with declaration files
+
+### Code Quality
+- Type safety MUST be enforced (no `any` types without explicit justification)
+- All public APIs MUST have TypeScript documentation comments
+- Exported functions MUST include usage examples in comments
+- Cyclomatic complexity MUST remain under 10 per function
+- Functions MUST do one thing and do it well (single responsibility)
+
+### Error Handling
+- Never swallow exceptions silently
+- Log errors to console when primary logging fails
+- Provide actionable error messages to developers
+- Include context in error messages (operation attempted, input state)
+
+## Quality Assurance
+
+### Testing Requirements
+- Minimum 85% code coverage for all non-trivial code paths
+- Contract tests MUST verify Supabase integration points
+- Integration tests MUST validate end-to-end logging flows
+- Unit tests MUST cover edge cases (network failures, invalid input, quota limits)
+- Performance tests MUST validate latency requirements
+
+### Test Organization
+- Contract tests: `tests/contract/` - verify external API contracts
+- Integration tests: `tests/integration/` - verify complete workflows
+- Unit tests: `tests/unit/` - verify isolated component behavior
+- Performance tests: `tests/performance/` - verify latency/throughput goals
+
+### Documentation
+- README MUST include installation, quickstart, and API reference
+- All exported classes/functions MUST have JSDoc comments
+- Breaking changes MUST be documented in CHANGELOG.md
+- Migration guides MUST be provided for major version bumps
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+### Amendment Process
+1. Propose constitutional change via GitHub issue
+2. Document rationale and impact analysis
+3. Obtain approval from project maintainer
+4. Update dependent templates (plan, spec, tasks)
+5. Increment constitution version according to rules below
+6. Merge with comprehensive change documentation
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+### Versioning Policy
+Constitution follows semantic versioning:
+- **MAJOR**: Breaking governance changes, principle removals/redefinitions
+- **MINOR**: New principles added, significant guidance expansions
+- **PATCH**: Clarifications, wording improvements, non-semantic fixes
+
+### Compliance Review
+- All pull requests MUST verify compliance with constitutional principles
+- Code reviews MUST reference relevant principles when providing feedback
+- Complexity additions MUST be justified against simplicity principles
+- Use `.specify/memory/constitution.md` as canonical governance reference
+- Violations require documented justification or alternative approach
+
+**Version**: 1.0.0 | **Ratified**: 2025-10-04 | **Last Amended**: 2025-10-04

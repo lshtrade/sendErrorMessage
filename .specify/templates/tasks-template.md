@@ -71,10 +71,12 @@
 
 ## Phase 3.5: Polish
 - [ ] T019 [P] Unit tests for validation in tests/unit/test_validation.py
-- [ ] T020 Performance tests (<200ms)
-- [ ] T021 [P] Update docs/api.md
-- [ ] T022 Remove duplication
+- [ ] T020 Performance tests (<100ms p95 per Constitutional requirement)
+- [ ] T021 [P] Update docs/api.md with JSDoc examples
+- [ ] T022 Remove duplication and verify cyclomatic complexity <10
 - [ ] T023 Run manual-testing.md
+- [ ] T024 Verify code coverage ≥85%
+- [ ] T025 Review error handling fallback mechanisms
 
 ## Dependencies
 - Tests (T004-T007) before implementation (T008-T014)
@@ -121,7 +123,11 @@ Task: "Integration test auth in tests/integration/test_auth.py"
 
 - [ ] All contracts have corresponding tests
 - [ ] All entities have model tasks
-- [ ] All tests come before implementation
+- [ ] All tests come before implementation (TDD enforced)
 - [ ] Parallel tasks truly independent
 - [ ] Each task specifies exact file path
 - [ ] No task modifies same file as another [P] task
+- [ ] Error handling and fallback mechanisms included
+- [ ] Performance validation tasks present
+- [ ] Code coverage target task included (≥85%)
+- [ ] Privacy/sanitization tasks added if handling sensitive data

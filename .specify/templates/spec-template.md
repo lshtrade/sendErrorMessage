@@ -69,10 +69,16 @@ When creating this spec from a user prompt:
 
 ### Functional Requirements
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
+- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
 - **FR-005**: System MUST [behavior, e.g., "log all security events"]
+
+### Non-Functional Requirements *(include if applicable)*
+- **NFR-001**: Performance - System MUST respond within [X]ms p95 latency
+- **NFR-002**: Reliability - System MUST implement fallback mechanisms for critical paths
+- **NFR-003**: Privacy - System MUST sanitize sensitive data before logging/storage
+- **NFR-004**: Testability - All features MUST have corresponding test scenarios
 
 *Example of marking unclear requirements:*
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
@@ -95,10 +101,16 @@ When creating this spec from a user prompt:
 
 ### Requirement Completeness
 - [ ] No [NEEDS CLARIFICATION] markers remain
-- [ ] Requirements are testable and unambiguous  
+- [ ] Requirements are testable and unambiguous
 - [ ] Success criteria are measurable
 - [ ] Scope is clearly bounded
 - [ ] Dependencies and assumptions identified
+
+### Constitutional Alignment
+- [ ] Error handling and reliability requirements specified
+- [ ] Privacy/security requirements identified
+- [ ] Performance constraints documented
+- [ ] Testing approach clear from scenarios
 
 ---
 

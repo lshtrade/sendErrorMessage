@@ -47,7 +47,30 @@
 ## Constitution Check
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+### Reliability First
+- [ ] All error handling paths include fallback mechanisms
+- [ ] No silent failures in critical code paths
+- [ ] Graceful degradation strategy documented
+
+### Privacy by Design
+- [ ] Sensitive data sanitization identified and implemented
+- [ ] No PII, passwords, or tokens in logs
+- [ ] Data handling reviewed for compliance (GDPR/CCPA)
+
+### Test-First Development
+- [ ] Tests written before implementation
+- [ ] TDD cycle enforced (Red-Green-Refactor)
+- [ ] Code coverage target: 85%+
+
+### Minimal Configuration
+- [ ] Sensible defaults provided for all options
+- [ ] New config options justified or eliminated
+- [ ] API simplicity validated
+
+### Performance Conscious
+- [ ] Latency requirements specified (<100ms p95)
+- [ ] Memory footprint considered (<10MB typical)
+- [ ] Performance benchmarks planned
 
 ## Project Structure
 
@@ -216,4 +239,4 @@ directories captured above]
 - [ ] Complexity deviations documented
 
 ---
-*Based on Constitution v2.1.1 - See `/memory/constitution.md`*
+*Based on Constitution v1.0.0 - See `.specify/memory/constitution.md`*
