@@ -1,6 +1,6 @@
 {
   "name": "error-logger-sendsms",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Lightweight error logging with Discord/Slack notifications - no database required",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
