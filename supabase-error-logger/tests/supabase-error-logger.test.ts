@@ -23,7 +23,7 @@ describe('SupabaseErrorLogger', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     
-    // env-utils 모킹
+    // Mock env-utils
     vi.spyOn(envUtils, 'createErrorLoggerConfig').mockReturnValue({
       supabaseUrl: 'https://test.supabase.co',
       supabaseKey: 'test-key',

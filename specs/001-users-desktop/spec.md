@@ -1,6 +1,6 @@
 # Feature Specification: Error Logger SendSMS
 
-**Feature Branch**: `001-users-sanghee-desktop`
+**Feature Branch**: `001-users-desktop`
 **Created**: 2025-10-04
 **Status**: Draft
 **Input**: User description: "I want to create a project that packages error-logger-sendSMS as an npm package with simple functionality to send errors to Discord or Slack without database connection"

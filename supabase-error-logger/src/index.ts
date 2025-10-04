@@ -1,7 +1,7 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { createErrorLoggerConfig, type Environment } from './env-utils';
 
-// 브라우저 환경에서 window 객체 타입 선언
+// Browser environment window object type declaration
 declare const window: any;
 
 export interface ErrorLogEntry {
@@ -44,7 +44,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
   private userId?: string;
   private sessionId?: string;
 
-  // 세션 ID 생성 함수
+  // Session ID generation function
   private generateSessionId(): string {
     return Math.random().toString(36).substring(2, 15) + 
            Math.random().toString(36).substring(2, 15) + 
@@ -52,24 +52,24 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
   }
 
   constructor(config?: Partial<SupabaseErrorLoggerConfig>) {
-    // 싱글톤 패턴: 이미 인스턴스가 있으면 기존 인스턴스 반환
+    // Singleton pattern: return existing instance if available
     if (SupabaseErrorLogger.instance) {
       return SupabaseErrorLogger.instance;
     }
 
-    // 세션 ID 생성 (없는 경우)
+    // Generate session ID (if not available)
     if (!this.sessionId) {
       this.sessionId = this.generateSessionId();
     }
-    // 환경 감지 함수
+    // Environment detection function
     const detectEnvironment = (): Environment => {
       try {
-        // 1. 명시적으로 전달된 환경 설정 우선 확인
+        // 1. Check explicitly passed environment configuration first
         if (config?.environment) {
           return config.environment;
         }
         
-        // 2. Vite 환경 변수 확인 (클라이언트 사이드에서 가장 확실)
+        // 2. Check Vite environment variables (most reliable on client side)
         if (typeof import.meta !== 'undefined' && import.meta.env) {
           if (import.meta.env.DEV) {
             return 'development';
@@ -82,7 +82,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
           }
         }
         
-        // 3. Node.js 환경 변수 확인 (서버 사이드)
+        // 3. Check Node.js environment variables (server side)
         if (typeof process !== 'undefined' && process.env) {
           if (process.env.NODE_ENV === 'development') {
             return 'development';
@@ -92,7 +92,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
           }
         }
         
-        // 4. 호스트명으로 판단 (개발 서버는 보통 localhost)
+        // 4. Determine by hostname (development servers usually use localhost)
         if (typeof window !== 'undefined' && window.location) {
           const hostname = window.location.hostname;
           if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('dev')) {
@@ -100,14 +100,14 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
           }
         }
       } catch (error) {
-        // 환경 감지 실패 시 기본값
+        // Default value when environment detection fails
       }
       
-      // 기본값 (개발 환경으로 가정)
+        // Default value (assume development environment)
       return 'development';
     };
 
-    // 기본 설정
+    // Default configuration
     const defaultConfig: SupabaseErrorLoggerConfig = {
       supabaseUrl: '',
       supabaseKey: '',
@@ -117,15 +117,15 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
       logLevel: 'debug',
     };
     
-    // 사용자 설정과 병합
+    // Merge user configuration
     this.config = {
       ...defaultConfig,
       ...config,
     };
     
-    // 환경 감지 디버깅 로그 제거 (프로덕션에서 불필요)
+    // Remove environment detection debug logs (unnecessary in production)
     // if (this.config.environment === 'development') {
-    //   console.log('[SupabaseErrorLogger] 환경 감지 결과:', {
+    //   console.log('[SupabaseErrorLogger] Environment detection result:', {
     //     detectedEnvironment: this.config.environment,
     //     configEnvironment: config?.environment,
     //     importMetaEnvDev: typeof import.meta !== 'undefined' ? import.meta.env?.DEV : 'undefined',
@@ -138,15 +138,15 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
     if (this.config.supabaseUrl && this.config.supabaseKey) {
       this.supabase = createClient(this.config.supabaseUrl, this.config.supabaseKey);
     } else {
-      console.error('[SupabaseErrorLogger] Supabase 설정이 부족합니다');
+      console.error('[SupabaseErrorLogger] Insufficient Supabase configuration');
       this.supabase = createClient('https://dummy.supabase.co', 'dummy-key');
     }
 
-    // 싱글톤 인스턴스 설정
+    // Set singleton instance
     SupabaseErrorLogger.instance = this;
   }
 
-  // 싱글톤 인스턴스 가져오기
+  // Get singleton instance
   public static getInstance(config?: Partial<SupabaseErrorLoggerConfig>): SupabaseErrorLogger {
     if (!SupabaseErrorLogger.instance) {
       SupabaseErrorLogger.instance = new SupabaseErrorLogger(config);
@@ -154,7 +154,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
     return SupabaseErrorLogger.instance;
   }
 
-  // 싱글톤 인스턴스 리셋 (테스트용)
+  // Reset singleton instance (for testing)
   public static resetInstance(): void {
     SupabaseErrorLogger.instance = null;
   }
@@ -167,13 +167,13 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
     let errorMessage: string;
     let errorStack: string | undefined;
 
-    // HTTP 에러 객체인지 확인 (status와 statusText 속성이 있는 경우)
+    // Check if it's an HTTP error object (has status and statusText properties)
     if (error && typeof error === 'object' && 'status' in error && 'statusText' in error) {
       status = (error as any).status;
       statusText = (error as any).statusText;
       errorMessage = (error as any).message ? String((error as any).message) : `HTTP ${status}${statusText ? ` ${statusText}` : ''}`;
       
-      // HTTP 에러의 경우 스택 트레이스 생성
+      // Generate stack trace for HTTP errors
       errorStack = `HTTP Error: ${status} ${statusText}\n` +
                   `URL: ${typeof window !== 'undefined' ? window.location.href : 'unknown'}\n` +
                   `User Agent: ${typeof window !== 'undefined' ? window.navigator.userAgent : 'unknown'}\n` +
@@ -183,7 +183,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
       errorStack = error.stack;
     } else {
       errorMessage = String(error);
-      // 일반 에러의 경우 기본 스택 트레이스 생성
+      // Generate basic stack trace for general errors
       errorStack = `Error: ${errorMessage}\n` +
                   `URL: ${typeof window !== 'undefined' ? window.location.href : 'unknown'}\n` +
                   `Timestamp: ${new Date().toISOString()}`;
@@ -210,7 +210,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
     };
 
     try {
-      // 서버 사이드 API를 통해 로깅 (RLS 우회)
+      // Log via server-side API (bypass RLS)
       const formData = new FormData();
       formData.append('errorData', JSON.stringify(logEntry));
       
@@ -222,12 +222,12 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
       const result = await response.json() as { success?: boolean; error?: string; data?: any };
       
       if (!response.ok || !result.success) {
-        console.error('[SupabaseErrorLogger] 서버 로깅 실패:', result);
-        // 보안상 클라이언트 사이드 직접 삽입은 비활성화
-        // 모든 에러 로깅은 서버 사이드 API를 통해서만 처리
+        console.error('[SupabaseErrorLogger] Server logging failed:', result);
+        // Client-side direct insertion disabled for security
+        // All error logging must be handled via server-side API only
       }
     } catch (err) {
-      console.error('[SupabaseErrorLogger] 예외 발생:', err);
+      console.error('[SupabaseErrorLogger] Exception occurred:', err);
     }
   }
 
@@ -252,7 +252,7 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
     };
 
     try {
-      // 서버 사이드 API를 통해 로깅 (RLS 우회)
+      // Log via server-side API (bypass RLS)
       const formData = new FormData();
       formData.append('errorData', JSON.stringify(logEntry));
       
@@ -264,12 +264,12 @@ export class SupabaseErrorLogger implements ISupabaseErrorLogger {
       const result = await response.json() as { success?: boolean; error?: string; data?: any };
       
       if (!response.ok || !result.success) {
-        console.error('[SupabaseErrorLogger] 서버 메시지 로깅 실패:', result);
-        // 보안상 클라이언트 사이드 직접 삽입은 비활성화
-        // 모든 에러 로깅은 서버 사이드 API를 통해서만 처리
+        console.error('[SupabaseErrorLogger] Server message logging failed:', result);
+        // Client-side direct insertion disabled for security
+        // All error logging must be handled via server-side API only
       }
     } catch (err) {
-      console.error('[SupabaseErrorLogger] 메시지 예외 발생:', err);
+      console.error('[SupabaseErrorLogger] Message exception occurred:', err);
     }
   }
 

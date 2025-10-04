@@ -1,8 +1,8 @@
 
 # Implementation Plan: Error Logger SendSMS
 
-**Branch**: `001-users-sanghee-desktop` | **Date**: 2025-10-04 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/Users/sanghee/Desktop/project2/sendErrorMessage/specs/001-users-sanghee-desktop/spec.md`
+**Branch**: `001-users-desktop` | **Date**: 2025-10-04 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/Users/sanghee/Desktop/project2/sendErrorMessage/specs/001-users-desktop/spec.md`
 
 ## Execution Flow (/plan command scope)
 ```
@@ -78,7 +78,7 @@ Create a lightweight npm package that provides Sentry-style error logging with d
 
 ### Documentation (this feature)
 ```
-specs/001-users-sanghee-desktop/
+specs/001-users-desktop/
 ├── spec.md              # Feature specification
 ├── plan.md              # This file (/plan command output)
 ├── research.md          # Phase 0 output (/plan command)

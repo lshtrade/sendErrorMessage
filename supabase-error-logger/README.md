@@ -1,14 +1,14 @@
 ## Supabase Error Logger
 
-Sentry 스타일의 `captureException`/`captureMessage` API를 제공하고, 로그를 Supabase 테이블에 저장하는 가벼운 로거입니다.
+A lightweight logger that provides Sentry-style `captureException`/`captureMessage` API and stores logs in Supabase tables.
 
-### 설치
+### Installation
 
 ```bash
 npm i supabase-error-logger @supabase/supabase-js
 ```
 
-### 테이블 스키마 예시
+### Table Schema Example
 
 ```sql
 create table if not exists error_logs (
@@ -29,7 +29,7 @@ create table if not exists error_logs (
 create index if not exists error_logs_level_timestamp_idx on error_logs(level, timestamp desc);
 ```
 
-### 사용법
+### Usage
 
 ```ts
 import { SupabaseErrorLogger } from 'supabase-error-logger';
@@ -41,29 +41,29 @@ const logger = new SupabaseErrorLogger({
   enabled: true,
 });
 
-// 사용자/세션 식별자 설정
+// Set user/session identifiers
 logger.setUser('user-123');
 logger.setSession('session-abc');
 
-// 예외 로깅 (Sentry.captureException 과 유사)
+// Exception logging (similar to Sentry.captureException)
 try {
   // ...
 } catch (err) {
   await logger.captureException(err as Error, { status: 500 });
 }
 
-// 메시지 로깅
+// Message logging
 await logger.captureMessage('just info');
 await logger.captureMessage('warning!', 'warning', { area: 'checkout' });
 
-// 런타임 중 설정 변경
+// Runtime configuration changes
 logger.configure({ enabled: false });
 ```
 
-### Remix `root.tsx` 연동 예시
+### Remix `root.tsx` Integration Example
 
 ```ts
-// app/root.tsx 내부 ErrorBoundary 등에서 사용
+// Used in ErrorBoundary etc. inside app/root.tsx
 import { SupabaseErrorLogger } from 'supabase-error-logger';
 
 const errorLogger = new SupabaseErrorLogger({
@@ -76,7 +76,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
     if (error.status !== 404) {
       errorLogger.captureException({ status: error.status, statusText: error.statusText, message: String(error) });
     }
-    // ... 기존 렌더링 로직
+    // ... existing rendering logic
   } else {
     errorLogger.captureException(error as any);
   }
@@ -84,7 +84,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 }
 ```
 
-### 테스트
+### Testing
 
 ```bash
 npm test

@@ -1,18 +1,18 @@
-# Supabase Error Logger 사용 예시
+# Supabase Error Logger Usage Example
 
-## Remix 프로젝트에서 사용하기
+## Using in Remix Project
 
-### 1. 설치
+### 1. Installation
 ```bash
 npm install supabase-error-logger @supabase/supabase-js
 ```
 
-### 2. root.tsx에서 사용
+### 2. Using in root.tsx
 ```tsx
 // app/root.tsx
 import { SupabaseErrorLogger } from 'supabase-error-logger';
 
-// 전역 로거 인스턴스 생성
+// Create global logger instance
 const errorLogger = new SupabaseErrorLogger({
   supabaseUrl: (globalThis as any).__ENV?.SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL,
   supabaseKey: (globalThis as any).__ENV?.SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY,
@@ -23,23 +23,23 @@ const errorLogger = new SupabaseErrorLogger({
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     if (error.status !== 404) {
-      // Sentry.captureException(error) 대신 사용
+      // Use instead of Sentry.captureException(error)
       errorLogger.captureException({ 
         status: error.status, 
         statusText: error.statusText, 
         message: String(error) 
       });
     }
-    // ... 기존 에러 페이지 렌더링
+    // ... existing error page rendering
   } else {
-    // 일반 에러도 로깅
+    // Log general errors too
     errorLogger.captureException(error as any);
   }
-  // ... 에러 페이지 렌더링
+  // ... error page rendering
 }
 ```
 
-### 3. API 라우트에서 사용
+### 3. Using in API Routes
 ```ts
 // app/routes/api/some-action.ts
 import { SupabaseErrorLogger } from 'supabase-error-logger';
@@ -51,7 +51,7 @@ const logger = new SupabaseErrorLogger({
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
-    // 비즈니스 로직
+    // Business logic
     return json({ success: true });
   } catch (error) {
     await logger.captureException(error as Error, { 
@@ -63,7 +63,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 ```
 
-### 4. 클라이언트 사이드에서 사용
+### 4. Using on Client Side
 ```tsx
 // app/components/SomeComponent.tsx
 import { SupabaseErrorLogger } from 'supabase-error-logger';

@@ -3,7 +3,7 @@
 **Feature Branch**: `001-error-logger-sendSMS`  
 **Created**: 2024-12-19  
 **Status**: Draft  
-**Input**: User description: "error-logger-sendSMS 해서 discord or slack으로 DB연결 없이 단순하게 slack이나 discord로 보내는 기능을 npm으로 패키징화 하는 프로젝트를 만들고 싶어"
+**Input**: User description: "I want to create a project that packages error-logger-sendSMS as an npm package with simple functionality to send errors to Discord or Slack without database connection"
 
 ## Execution Flow (main)
 ```

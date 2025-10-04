@@ -1,0 +1,23 @@
+# Development files
+src/
+tests/
+examples/
+.env.example
+tsconfig.json
+vitest.config.ts
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore

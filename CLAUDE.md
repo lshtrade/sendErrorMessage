@@ -3,7 +3,7 @@
 Auto-generated from all feature plans. Last updated: 2025-10-04
 
 ## Active Technologies
-- TypeScript 5.0+ (strict mode enabled) + axios (HTTP client), @types/node (Node.js types) (001-users-sanghee-desktop)
+- TypeScript 5.0+ (strict mode enabled) + axios (HTTP client), @types/node (Node.js types) (001-users-desktop)
 
 ## Project Structure
 ```
@@ -18,7 +18,7 @@ npm test [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNO
 TypeScript 5.0+ (strict mode enabled): Follow standard conventions
 
 ## Recent Changes
-- 001-users-sanghee-desktop: Added TypeScript 5.0+ (strict mode enabled) + axios (HTTP client), @types/node (Node.js types)
+- 001-users-desktop: Added TypeScript 5.0+ (strict mode enabled) + axios (HTTP client), @types/node (Node.js types)
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->
