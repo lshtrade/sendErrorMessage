@@ -1,6 +1,6 @@
 {
   "name": "error-logger-sendsms",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Lightweight error logging with Discord/Slack notifications - no database required",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,12 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/error-logger-sendsms.git"
+    "url": "https://github.com/lshtrade/sendErrorMessage/tree/main/error-logger-sendSMS"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/error-logger-sendsms/issues"
+    "url": "https://github.com/lshtrade/sendErrorMessage/issues"
   },
-  "homepage": "https://github.com/yourusername/error-logger-sendsms#readme",
+  "homepage": "https://github.com/lshtrade/sendErrorMessage#readme",
   "dependencies": {
     "axios": "^1.6.0"
   },
